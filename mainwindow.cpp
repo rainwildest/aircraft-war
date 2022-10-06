@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "config.h"
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,5 +24,8 @@ void MainWindow::initScence()
 
     // 设置标题
     setWindowTitle(GAME_TITLE);
+
+    // 加载图标
+    setWindowIcon(QIcon(GAME_ICON));
 }
 

@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         mainwindow.h
         map.h
         map.cpp
+        heroplane.h
+        heroplane.cpp
         config.h
         mainwindow.ui
         resource.qrc

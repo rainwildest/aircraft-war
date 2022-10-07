@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include "map.h"
+#include "heroplane.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,11 +29,18 @@ public:
     // 绘制到屏幕中
     void paintEvent(QPaintEvent *);
 
+    // 重定义鼠标移动事件
+    void mouseMoveEvent(QMouseEvent *event);
+
+public:
     // 地图对象
     Map m_map;
 
+    // 飞机对象
+    HeroPlane m_hero;
+
     // 定时器
-    QTimer m_Timer;
+    QTimer m_timer;
 
 private:
     Ui::MainWindow *ui;

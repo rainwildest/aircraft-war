@@ -15,4 +15,10 @@
  */
 #define MAP_PATH ":/resource/images/background.png"
 #define MAP_SCROLL_SPEED 2;
+
+/**
+ * @brief 飞机配置数据
+ */
+#define HERO_PATH ":/resource/sprites/hero2.png"
+
 #endif // CONFIG_H

@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         map.cpp
         heroplane.h
         heroplane.cpp
+        bullet.h
+        bullet.cpp
         config.h
         mainwindow.ui
         resource.qrc

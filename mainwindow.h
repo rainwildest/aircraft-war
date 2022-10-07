@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "map.h"
 #include "heroplane.h"
+#include "bullet.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,6 +42,9 @@ public:
 
     // 定时器
     QTimer m_timer;
+
+    // 子弹对象
+//    Bullet temp_bullet;
 
 private:
     Ui::MainWindow *ui;

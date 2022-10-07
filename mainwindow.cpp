@@ -56,6 +56,9 @@ void MainWindow::updatePosition()
 {
     // 更新地图的坐标
     m_map.mapPosition();
+
+//    temp_bullet.m_free = false;
+//    temp_bullet.updatePosition();
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -68,6 +71,8 @@ void MainWindow::paintEvent(QPaintEvent *)
 
     // 绘制英雄飞机
     painter.drawPixmap(m_hero.m_x, m_hero.m_y, m_hero.m_plane);
+
+    //painter.drawPixmap(temp_bullet.m_x, temp_bullet.m_y, temp_bullet.m_bullet);
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent * event)

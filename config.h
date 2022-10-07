@@ -21,4 +21,10 @@
  */
 #define HERO_PATH ":/resource/sprites/hero2.png"
 
+/**
+ * @brief 子弹配置数据
+ */
+#define BULLET_PATH ":/resource/sprites/bullet1.png"
+#define BULLET_SPEED 5 // 子弹移动速度
+
 #endif // CONFIG_H

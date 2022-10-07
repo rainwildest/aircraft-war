@@ -18,6 +18,8 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
+        map.h
+        map.cpp
         config.h
         mainwindow.ui
         resource.qrc

@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/images/background.png</file>
+        <file>resource/images/game_again.png</file>
+        <file>resource/images/game_continue.png</file>
+        <file>resource/images/game_over.png</file>
+        <file>resource/images/game_pause_nor.png</file>
+        <file>resource/images/game_pause_pressed.png</file>
+        <file>resource/images/game_resume_nor.png</file>
+        <file>resource/images/game_resume_pressed.png</file>
+        <file>resource/sprites/bullet1.png</file>
+        <file>resource/sprites/bullet2.png</file>
+        <file>resource/sprites/enemy1.png</file>
+        <file>resource/sprites/enemy1_down1.png</file>
+        <file>resource/sprites/enemy1_down2.png</file>
+        <file>resource/sprites/enemy1_down3.png</file>
+        <file>resource/sprites/enemy1_down4.png</file>
+        <file>resource/sprites/enemy2.png</file>
+        <file>resource/sprites/enemy2_down1.png</file>
+        <file>resource/sprites/enemy2_down2.png</file>
+        <file>resource/sprites/enemy2_down3.png</file>
+        <file>resource/sprites/enemy2_down4.png</file>
+        <file>resource/sprites/enemy3.png</file>
+        <file>resource/sprites/enemy3_down1.png</file>
+        <file>resource/sprites/enemy3_down2.png</file>
+        <file>resource/sprites/enemy3_down3.png</file>
+        <file>resource/sprites/enemy3_down4.png</file>
+        <file>resource/sprites/enemy3_down5.png</file>
+        <file>resource/sprites/enemy3_down6.png</file>
+        <file>resource/sprites/favicon.ico</file>
+        <file>resource/sprites/hero_blowup_n1.png</file>
+        <file>resource/sprites/hero_blowup_n2.png</file>
+        <file>resource/sprites/hero_blowup_n3.png</file>
+        <file>resource/sprites/hero_blowup_n4.png</file>
+        <file>resource/sprites/hero1.png</file>
+        <file>resource/sprites/hero2.png</file>
+    </qresource>
+</RCC>

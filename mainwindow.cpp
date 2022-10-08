@@ -46,7 +46,7 @@ void MainWindow::playGame()
     m_timer.start();
 
     // 监听定时器发送的信号
-    connect(&m_timer, &QTimer::timeout, [=](){
+    connect(&m_timer, &QTimer::timeout, [=]() {
         // 敌机出场
         enemyToScene();
 
@@ -66,9 +66,21 @@ void MainWindow::updatePosition()
     // 更新地图的坐标
     m_map.mapPosition();
 
+    if(!gameOver) {
+        m_hero.updateInfo();
 
-    // 发射子弹
-    m_hero.shoot();
+        // 发射子弹
+        m_hero.shoot();
+    }
+
+    if(m_heroBomb.m_heroFree == false) {
+      bool status =  m_heroBomb.updateHeroInfo();
+
+      if(status) {
+          stopTimer = true;
+          m_timer.stop();
+      }
+    }
 
     // 计算所有非空闲子弹的当前坐标
     for(int i = 0; i < BULLET_NUM; i++) {
@@ -101,8 +113,16 @@ void MainWindow::paintEvent(QPaintEvent *)
     painter.drawPixmap(0, m_map.m_map1_posY, m_map.m_map1);
     painter.drawPixmap(0, m_map.m_map2_posY, m_map.m_map2);
 
-    // 绘制英雄飞机
-    painter.drawPixmap(m_hero.m_x, m_hero.m_y, m_hero.m_plane);
+    if(!gameOver) {
+        // 绘制英雄飞机
+        painter.drawPixmap(m_hero.m_x, m_hero.m_y, m_hero.m_plane);
+        painter.drawRect(m_hero.m_rect);
+    } else {
+        // 绘制英雄飞机爆炸
+        if(!stopTimer) {
+            painter.drawPixmap(m_heroBomb.m_x, m_heroBomb.m_y, m_heroBomb.m_pixHero[m_heroBomb.m_heroIndex]);
+        }
+    }
 
     // 绘制子弹
     for(int i = 0; i < BULLET_NUM; i++) {
@@ -114,13 +134,13 @@ void MainWindow::paintEvent(QPaintEvent *)
     // 绘制敌机
     for(int i = 0; i < ENEMY_NUM; i++) {
         if(m_enemys[i].m_free == false) {
-//            m_enemys[i].updatePosition();
             painter.drawPixmap(m_enemys[i].m_x, m_enemys[i].m_y, m_enemys[i].m_enemy);
+            painter.drawRect(m_enemys[i].m_rect);
         }
     }
 
     // 绘制爆炸
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i <= BOMB_NUM; i++) {
         if(m_bombs[i].m_free == false) {
             painter.drawPixmap(m_bombs[i].m_x, m_bombs[i].m_y, m_bombs[i].m_pixArr[m_bombs[i].m_index]);
         }
@@ -129,6 +149,8 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 void MainWindow::mouseMoveEvent(QMouseEvent * event)
 {
+    if(gameOver) return;
+
     QPointF point = event->position();
 
     int x = point.x() - m_hero.m_rect.width() * 0.5;
@@ -169,7 +191,7 @@ void MainWindow::enemyToScene()
             m_enemys[i].m_free = false;
 
             // 坐标
-            m_enemys[i].m_x = rand() % (GAME_WIDTH - m_enemys[i].m_rect.width());
+            m_enemys[i].m_x = rand() % (GAME_WIDTH - m_enemys[i].m_rect.width() - 30);
             m_enemys[i].m_y = -m_enemys[i].m_rect.height();
 
             break;
@@ -179,6 +201,8 @@ void MainWindow::enemyToScene()
 
 void MainWindow::collisionDetection()
 {
+    if(gameOver) return;
+
     // 遍历所有非空闲的敌机
     for(int i = 0; i < ENEMY_NUM; i++) {
         // 空闲敌机 执行下一次循环
@@ -186,9 +210,18 @@ void MainWindow::collisionDetection()
 
 
         if(m_hero.m_rect.intersects(m_enemys[i].m_rect)) {
-            m_timer.stop();
+            gameOver = true;
+
+            m_heroBomb.m_heroFree = false;
+
+            m_heroBomb.m_x = m_hero.m_x;
+            m_heroBomb.m_y = m_hero.m_y;
+
+//            m_timer.stop();
             return;
         }
+
+
 
         // 遍历所有非空闲的子弹
         for(int j = 0; j < BULLET_NUM; j++) {

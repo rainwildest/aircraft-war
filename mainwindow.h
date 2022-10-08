@@ -56,8 +56,14 @@ public:
     // 爆炸数组
     Bomb m_bombs[BOMB_NUM];
 
+    Bomb m_heroBomb;
+
     // 敌机出场间隔记录
     int m_recorder = 0;
+
+    bool gameOver = false;
+
+    bool stopTimer = false;
 
 private:
     Ui::MainWindow *ui;

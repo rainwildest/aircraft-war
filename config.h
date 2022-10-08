@@ -19,7 +19,7 @@
 /**
  * @brief 飞机配置数据
  */
-#define HERO_PATH ":/resource/sprites/hero2.png"
+#define HERO_PATH ":/resource/sprites/hero%1.png"
 
 /**
  * @brief 子弹配置数据
@@ -41,8 +41,9 @@
  * @brief 爆炸配置数据
  */
 #define BOMB_PATH ":/resource/sprites/enemy%1_down%2.png"
+#define BOME_HERO_PATH ":/resource/sprites/hero_blowup_n%1.png"
 #define BOMB_NUM 20         // 爆炸数量
-#define BOMB_MAX 6          // 爆炸图片最大索引
-#define BOMB_INTERVAL 20    // 爆炸切图时间间隔
+#define BOMB_MAX 4          // 爆炸图片最大索引
+#define BOMB_INTERVAL 30    // 爆炸切图时间间隔
 
 #endif // CONFIG_H

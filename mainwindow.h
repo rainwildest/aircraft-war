@@ -36,6 +36,9 @@ public:
     // 敌机出场
     void enemyToScene();
 
+    // 碰撞检测
+    void collisionDetection();
+
 public:
     // 地图对象
     Map m_map;

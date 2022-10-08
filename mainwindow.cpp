@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDebug>
+#include <ctime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +36,12 @@ void MainWindow::initScence()
 
     // 定时器初始化
     m_timer.setInterval(GAME_RATE);
+
+
+    // 敌机出场时间间隔 初始化
+    m_recorder = 0;
+
+    srand((unsigned int)time(NULL));
 }
 
 void MainWindow::playGame()
@@ -44,6 +51,9 @@ void MainWindow::playGame()
 
     // 监听定时器发送的信号
     connect(&m_timer, &QTimer::timeout, [=](){
+        // 敌机出场
+        enemyToScene();
+
         // 更新游戏中元素的坐标
         updatePosition();
 
@@ -68,8 +78,13 @@ void MainWindow::updatePosition()
             m_hero.m_bullets[i].updatePosition();
         }
     }
-//    temp_bullet.m_free = false;
-//    temp_bullet.updatePosition();
+
+    // 敌机出场
+    for(int i = 0; i < ENEMY_NUM; i++) {
+        if(m_enemys[i].m_free == false) {
+            m_enemys[i].updatePosition();
+        }
+    }
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -83,12 +98,20 @@ void MainWindow::paintEvent(QPaintEvent *)
     // 绘制英雄飞机
     painter.drawPixmap(m_hero.m_x, m_hero.m_y, m_hero.m_plane);
 
+    // 绘制子弹
     for(int i = 0; i < BULLET_NUM; i++) {
         if(m_hero.m_bullets[i].m_free == false) {
             painter.drawPixmap(m_hero.m_bullets[i].m_x, m_hero.m_bullets[i].m_y, m_hero.m_bullets[i].m_bullet);
         }
     }
-    //painter.drawPixmap(temp_bullet.m_x, temp_bullet.m_y, temp_bullet.m_bullet);
+
+    // 绘制敌机
+    for(int i = 0; i < ENEMY_NUM; i++) {
+        if(m_enemys[i].m_free == false) {
+//            m_enemys[i].updatePosition();
+            painter.drawPixmap(m_enemys[i].m_x, m_enemys[i].m_y, m_enemys[i].m_enemy);
+        }
+    }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent * event)
@@ -116,5 +139,28 @@ void MainWindow::mouseMoveEvent(QMouseEvent * event)
     }
 
     m_hero.setPosition(x, y);
+}
+
+void MainWindow::enemyToScene()
+{
+    m_recorder++;
+
+    // 未达到出场间隔
+    if(m_recorder < ENEMY_INTERVAL) return;
+
+    m_recorder = 0;
+
+    for(int i = 0 ; i < ENEMY_NUM; i++) {
+        //是空闲敌机
+        if(m_enemys[i].m_free) {
+            m_enemys[i].m_free = false;
+
+            // 坐标
+            m_enemys[i].m_x = rand() % (GAME_WIDTH - m_enemys[i].m_rect.width());
+            m_enemys[i].m_y = -m_enemys[i].m_rect.height();
+
+            break;
+        }
+    }
 }
 

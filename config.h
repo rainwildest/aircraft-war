@@ -29,4 +29,12 @@
 #define BULLET_NUM 30   //弹匣中子弹总数
 #define BULLET_INTERVAL 20  // 发射子弹时间间隔
 
+/**
+ * @brief 敌机配置数据
+ */
+#define ENEMY_PATH ":/resource/sprites/enemy1.png"
+#define ENEMY_SPEED 5       // 敌机移动速度
+#define ENEMY_NUM 20        // 敌机总数量
+#define ENEMY_INTERVAL 30   // 敌机出场时间间隔
+
 #endif // CONFIG_H

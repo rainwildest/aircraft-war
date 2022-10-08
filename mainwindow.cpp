@@ -57,6 +57,17 @@ void MainWindow::updatePosition()
     // 更新地图的坐标
     m_map.mapPosition();
 
+
+    // 发射子弹
+    m_hero.shoot();
+
+    // 计算所有非空闲子弹的当前坐标
+    for(int i = 0; i < BULLET_NUM; i++) {
+        // 非空闲子弹，计算发射位置
+        if(m_hero.m_bullets[i].m_free == false) {
+            m_hero.m_bullets[i].updatePosition();
+        }
+    }
 //    temp_bullet.m_free = false;
 //    temp_bullet.updatePosition();
 }
@@ -72,6 +83,11 @@ void MainWindow::paintEvent(QPaintEvent *)
     // 绘制英雄飞机
     painter.drawPixmap(m_hero.m_x, m_hero.m_y, m_hero.m_plane);
 
+    for(int i = 0; i < BULLET_NUM; i++) {
+        if(m_hero.m_bullets[i].m_free == false) {
+            painter.drawPixmap(m_hero.m_bullets[i].m_x, m_hero.m_bullets[i].m_y, m_hero.m_bullets[i].m_bullet);
+        }
+    }
     //painter.drawPixmap(temp_bullet.m_x, temp_bullet.m_y, temp_bullet.m_bullet);
 }
 

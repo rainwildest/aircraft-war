@@ -25,6 +25,8 @@
  * @brief 子弹配置数据
  */
 #define BULLET_PATH ":/resource/sprites/bullet1.png"
-#define BULLET_SPEED 5 // 子弹移动速度
+#define BULLET_SPEED 5  // 子弹移动速度
+#define BULLET_NUM 30   //弹匣中子弹总数
+#define BULLET_INTERVAL 20  // 发射子弹时间间隔
 
 #endif // CONFIG_H

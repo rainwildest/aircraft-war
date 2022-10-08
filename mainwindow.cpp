@@ -37,10 +37,6 @@ void MainWindow::initScence()
     // 定时器初始化
     m_timer.setInterval(GAME_RATE);
 
-
-    // 敌机出场时间间隔 初始化
-    m_recorder = 0;
-
     srand((unsigned int)time(NULL));
 }
 
@@ -88,6 +84,13 @@ void MainWindow::updatePosition()
             m_enemys[i].updatePosition();
         }
     }
+
+    // 计算爆炸的播放的图片
+    for(int i = 0; i < 4; i++) {
+        if(m_bombs[i].m_free == false) {
+            m_bombs[i].updateInfo();
+        }
+    }
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -113,6 +116,13 @@ void MainWindow::paintEvent(QPaintEvent *)
         if(m_enemys[i].m_free == false) {
 //            m_enemys[i].updatePosition();
             painter.drawPixmap(m_enemys[i].m_x, m_enemys[i].m_y, m_enemys[i].m_enemy);
+        }
+    }
+
+    // 绘制爆炸
+    for(int i = 0; i < 4; i++) {
+        if(m_bombs[i].m_free == false) {
+            painter.drawPixmap(m_bombs[i].m_x, m_bombs[i].m_y, m_bombs[i].m_pixArr[m_bombs[i].m_index]);
         }
     }
 }
@@ -171,18 +181,38 @@ void MainWindow::collisionDetection()
 {
     // 遍历所有非空闲的敌机
     for(int i = 0; i < ENEMY_NUM; i++) {
-        // 空闲飞机 执行下一次循环
+        // 空闲敌机 执行下一次循环
         if(m_enemys[i].m_free) continue;
+
+
+        if(m_hero.m_rect.intersects(m_enemys[i].m_rect)) {
+            m_timer.stop();
+            return;
+        }
 
         // 遍历所有非空闲的子弹
         for(int j = 0; j < BULLET_NUM; j++) {
             // 空闲子弹 执行下一次循环
             if(m_hero.m_bullets[j].m_free) continue;
 
-            // 子弹和敌机相交
+            // 子弹和敌机相交 发生碰撞
             if(m_enemys[i].m_rect.intersects(m_hero.m_bullets[j].m_rect)) {
                 m_enemys[i].m_free = true;
                 m_hero.m_bullets[j].m_free = true;
+
+                // 播放爆炸效果
+                for(int k = 0; k < 4; k++) {
+                    if(m_bombs[k].m_free) {
+                        // 空闲的爆炸
+                        m_bombs[k].m_free = false;
+
+                        // 更新爆炸坐标
+                        m_bombs[k].m_x = m_enemys[i].m_x;
+                        m_bombs[k].m_y = m_enemys[i].m_y;
+
+                        break;
+                    }
+                }
             }
         }
     }

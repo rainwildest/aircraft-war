@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         bullet.cpp
         enemyplane.h
         enemyplane.cpp
+        bomb.h
+        bomb.cpp
         config.h
         mainwindow.ui
         resource.qrc

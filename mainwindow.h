@@ -6,6 +6,7 @@
 #include "map.h"
 #include "heroplane.h"
 #include "enemyplane.h"
+#include "bomb.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -52,8 +53,11 @@ public:
     // 敌机数组
     EnemyPlane m_enemys[ENEMY_NUM];
 
-    //敌机出场间隔记录
-    int m_recorder;
+    // 爆炸数组
+    Bomb m_bombs[BOMB_NUM];
+
+    // 敌机出场间隔记录
+    int m_recorder = 0;
 
 private:
     Ui::MainWindow *ui;

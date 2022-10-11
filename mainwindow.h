@@ -40,6 +40,9 @@ public:
     // 碰撞检测
     void collisionDetection();
 
+    // 重载
+    void heavyLoad();
+
 public:
     // 地图对象
     Map m_map;
@@ -64,6 +67,8 @@ public:
     bool gameOver = false;
 
     bool stopTimer = false;
+
+    int fraction = 0;
 
 private:
     Ui::MainWindow *ui;

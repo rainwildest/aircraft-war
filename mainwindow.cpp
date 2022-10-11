@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <ctime>
+#include <QFontDatabase>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,6 +26,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::initScence()
 {
+//    int fontId = QFontDatabase::addApplicationFont(":/typeface/resource/font/Megatron.ttf");
+//    if(fontId >= 0){
+
+//        QString mysh = QFontDatabase::applicationFontFamilies(fontId).at(0);
+//        qDebug() << mysh;
+//        QFont font(mysh);
+//        QApplication::setFont(font);
+//    }
+//    else{
+
+//        qDebug() << "fontId:" << fontId << " 字体加载失败";
+//    }
+
     // 设置窗口固定尺寸
     setFixedSize(GAME_WIDTH, GAME_HEIGHT);
 
@@ -38,6 +52,25 @@ void MainWindow::initScence()
     m_timer.setInterval(GAME_RATE);
 
     srand((unsigned int)time(NULL));
+
+    QFont font = ui->fraction_label->font();
+
+    int fontID = QFontDatabase::addApplicationFont(":/typeface/resource/font/Momo.ttf");
+    QStringList loadedFontFamilies = QFontDatabase::applicationFontFamilies(fontID);
+
+    if(!loadedFontFamilies.empty()) {
+        font = loadedFontFamilies.at(0);
+        font.setFamily(loadedFontFamilies.at(0));
+        ui->fraction_label->setFont(font);
+    }
+
+    ui->reload_btn->setVisible(false);
+    ui->continue_btn->setVisible(false);
+    ui->over_btn->setVisible(false);
+
+    connect(ui->reload_btn, &QPushButton::clicked, [=]() {
+        heavyLoad();
+    });
 }
 
 void MainWindow::playGame()
@@ -47,17 +80,18 @@ void MainWindow::playGame()
 
     // 监听定时器发送的信号
     connect(&m_timer, &QTimer::timeout, [=]() {
+
         // 敌机出场
         enemyToScene();
 
         // 更新游戏中元素的坐标
         updatePosition();
 
-        // 绘制到屏幕中
-        update();
-
         //碰撞检测
         collisionDetection();
+
+        // 绘制到屏幕中
+        update();
     });
 }
 
@@ -76,9 +110,13 @@ void MainWindow::updatePosition()
     if(m_heroBomb.m_heroFree == false) {
       bool status =  m_heroBomb.updateHeroInfo();
 
+      // 播放完爆炸效果就停止
       if(status) {
           stopTimer = true;
           m_timer.stop();
+
+          // 显示重新按钮
+          ui->reload_btn->setVisible(true);
       }
     }
 
@@ -169,8 +207,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent * event)
         y = 0;
     }
 
-    if(y >= GAME_HEIGHT - m_hero.m_rect.height()) {
-        y = GAME_HEIGHT - m_hero.m_rect.height();
+    if(y >= GAME_HEIGHT - m_hero.m_rect.height() - 32) {
+        y = GAME_HEIGHT - m_hero.m_rect.height() - 32;
     }
 
     m_hero.setPosition(x, y);
@@ -243,11 +281,32 @@ void MainWindow::collisionDetection()
                         m_bombs[k].m_x = m_enemys[i].m_x;
                         m_bombs[k].m_y = m_enemys[i].m_y;
 
+                        fraction += 10;
+                        ui->fraction_label->setText(QString::number(fraction));
+
                         break;
                     }
                 }
             }
         }
     }
+}
+
+void MainWindow::heavyLoad()
+{
+    gameOver = false;
+    stopTimer = false;
+
+    ui->reload_btn->setVisible(false);
+    ui->fraction_label->setText("0");
+
+    // 全部设为空闲敌机
+    for(int i = 0 ; i < ENEMY_NUM; i++) {
+        m_enemys[i].m_free = true;
+    }
+
+    m_hero.initialization();
+
+    m_timer.start();
 }
 

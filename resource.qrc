@@ -35,4 +35,7 @@
         <file>resource/sprites/hero1.png</file>
         <file>resource/sprites/hero2.png</file>
     </qresource>
+    <qresource prefix="/typeface">
+        <file>resource/font/Momo.ttf</file>
+    </qresource>
 </RCC>
